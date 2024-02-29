@@ -81,37 +81,37 @@ if [ $stage -le 0 ] && [ $stop_stage -ge 0 ]; then
   #
   #   ln -sfv /path/to/GigaSpeech $dl_dir/GigaSpeech
   #
-  if [ ! -d $dl_dir/GigaSpeech/audio ] && [ ! -f $dl_dir/GigaSpeech.json ]; then
-    # Check credentials.
-    if [ ! -f $dl_dir/password ]; then
-      echo -n "$0: Please apply for the download credentials by following"
-      echo -n "https://github.com/SpeechColab/GigaSpeech#download"
-      echo " and save it to $dl_dir/password."
-      exit 1;
-    fi
-    PASSWORD=`cat $dl_dir/password 2>/dev/null`
-    if [ -z "$PASSWORD" ]; then
-      echo "$0: Error, $dl_dir/password is empty."
-      exit 1;
-    fi
-    PASSWORD_MD5=`echo $PASSWORD | md5sum | cut -d ' ' -f 1`
-    if [[ $PASSWORD_MD5 != "dfbf0cde1a3ce23749d8d81e492741b8" ]]; then
-      echo "$0: Error, invalid $dl_dir/password."
-      exit 1;
-    fi
-    # Download XL, DEV and TEST sets by default.
-    lhotse download gigaspeech --subset $subset --host tsinghua \
-      $dl_dir/password $dl_dir/GigaSpeech
-  fi
+#  if [ ! -d $dl_dir/GigaSpeech/audio ] && [ ! -f $dl_dir/GigaSpeech.json ]; then
+#    # Check credentials.
+#    if [ ! -f $dl_dir/password ]; then
+#      echo -n "$0: Please apply for the download credentials by following"
+#      echo -n "https://github.com/SpeechColab/GigaSpeech#download"
+#      echo " and save it to $dl_dir/password."
+#      exit 1;
+#    fi
+#    PASSWORD=`cat $dl_dir/password 2>/dev/null`
+#    if [ -z "$PASSWORD" ]; then
+#      echo "$0: Error, $dl_dir/password is empty."
+#      exit 1;
+#    fi
+#    PASSWORD_MD5=`echo $PASSWORD | md5sum | cut -d ' ' -f 1`
+#    if [[ $PASSWORD_MD5 != "dfbf0cde1a3ce23749d8d81e492741b8" ]]; then
+#      echo "$0: Error, invalid $dl_dir/password."
+#      exit 1;
+#    fi
+#    # Download XL, DEV and TEST sets by default.
+#    lhotse download gigaspeech --subset $subset --host tsinghua \
+#      $dl_dir/password $dl_dir/GigaSpeech
+#  fi
 
   # If you have pre-downloaded it to /path/to/musan,
   # you can create a symlink
   #
   #   ln -sfv /path/to/musan $dl_dir/
   #
-  if [ ! -d $dl_dir/musan ]; then
-    lhotse download musan $dl_dir
-  fi
+#  if [ ! -d $dl_dir/musan ]; then
+#    lhotse download musan $dl_dir
+#  fi
 fi
 
 if [ $stage -le 1 ] && [ $stop_stage -ge 1 ]; then
