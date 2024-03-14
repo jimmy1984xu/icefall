@@ -1245,7 +1245,9 @@ def run(rank, world_size, args):
 
     train_cuts = train_cuts.filter(remove_short_and_long_utt)
     print("do fix start begin")
+    print(train_cuts[0].start, train_cuts[0].features.start)
     train_cuts = train_cuts.map(fix_start)
+    print(train_cuts[0].start, train_cuts[0].features.start)
 
     if params.start_batch > 0 and checkpoints and "sampler" in checkpoints:
         # We only load the sampler's state dict when it loads a checkpoint
