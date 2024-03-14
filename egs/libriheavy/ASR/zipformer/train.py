@@ -1239,7 +1239,12 @@ def run(rank, world_size, args):
     if not params.train_with_punctuation:
         train_cuts = train_cuts.map(normalize_text)
 
+    def fix_start(c):
+        c.start = c.features.start
+        return c
+
     train_cuts = train_cuts.filter(remove_short_and_long_utt)
+    train_cuts = train_cuts.map(fix_start)
 
     if params.start_batch > 0 and checkpoints and "sampler" in checkpoints:
         # We only load the sampler's state dict when it loads a checkpoint
