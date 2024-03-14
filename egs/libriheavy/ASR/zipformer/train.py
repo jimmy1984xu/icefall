@@ -1244,6 +1244,7 @@ def run(rank, world_size, args):
         return c
 
     train_cuts = train_cuts.filter(remove_short_and_long_utt)
+    print("do fix start begin")
     train_cuts = train_cuts.map(fix_start)
 
     if params.start_batch > 0 and checkpoints and "sampler" in checkpoints:
