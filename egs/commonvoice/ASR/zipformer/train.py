@@ -64,7 +64,7 @@ import sentencepiece as spm
 import torch
 import torch.multiprocessing as mp
 import torch.nn as nn
-from asr_datamodule import GigaSpeechAsrDataModule
+from asr_datamodule import CommonVoiceAsrDataModule
 from decoder import Decoder
 from joiner import Joiner
 from lhotse.cut import Cut
@@ -1187,9 +1187,9 @@ def run(rank, world_size, args):
         T = ((c.num_frames - 7) // 2 + 1) // 2
         return T > 0
 
-    gigaspeech = GigaSpeechAsrDataModule(args)
+    commonvoice = CommonVoiceAsrDataModule(args)
 
-    train_cuts = gigaspeech.train_cuts()
+    train_cuts = commonvoice.train_cuts()
     train_cuts = train_cuts.filter(remove_short_utt)
 
     if params.start_batch > 0 and checkpoints and "sampler" in checkpoints:
@@ -1199,13 +1199,13 @@ def run(rank, world_size, args):
     else:
         sampler_state_dict = None
 
-    train_dl = gigaspeech.train_dataloaders(
+    train_dl = commonvoice.train_dataloaders(
         train_cuts, sampler_state_dict=sampler_state_dict
     )
 
-    valid_cuts = gigaspeech.dev_cuts()
+    valid_cuts = commonvoice.dev_cuts()
     valid_cuts = valid_cuts.filter(remove_short_utt)
-    valid_dl = gigaspeech.valid_dataloaders(valid_cuts)
+    valid_dl = commonvoice.valid_dataloaders(valid_cuts)
 
     if not params.print_diagnostics and params.scan_for_oom_batches:
         scan_pessimistic_batches_for_oom(
@@ -1344,7 +1344,7 @@ def scan_pessimistic_batches_for_oom(
 
 def main():
     parser = get_parser()
-    GigaSpeechAsrDataModule.add_arguments(parser)
+    CommonVoiceAsrDataModule.add_arguments(parser)
     args = parser.parse_args()
     args.exp_dir = Path(args.exp_dir)
 
