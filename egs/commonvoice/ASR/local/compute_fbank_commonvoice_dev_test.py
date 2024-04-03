@@ -74,7 +74,7 @@ def compute_fbank_commonvoice_dev_test(language: str):
 
     logging.info(f"device: {device}")
 
-    set_audio_duration_mismatch_tolerance(0.05) # 50ms tolerance
+    set_audio_duration_mismatch_tolerance(0.075) # 75ms tolerance
 
     for partition in subsets:
         cuts_path = output_dir / f"cv-{language}_cuts_{partition}.jsonl.gz"
