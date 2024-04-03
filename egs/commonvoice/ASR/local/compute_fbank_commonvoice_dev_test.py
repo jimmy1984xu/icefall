@@ -31,7 +31,7 @@ from typing import Optional
 
 import torch
 from filter_cuts import filter_cuts
-from lhotse import CutSet, KaldifeatFbank, KaldifeatFbankConfig, LilcomChunkyWriter
+from lhotse import CutSet, KaldifeatFbank, KaldifeatFbankConfig, LilcomChunkyWriter, set_audio_duration_mismatch_tolerance
 
 # Torch's multithreaded behavior needs to be disabled or
 # it wastes a lot of CPU and slow things down.
@@ -73,6 +73,8 @@ def compute_fbank_commonvoice_dev_test(language: str):
     logging.info(f"fbankconfig: {kaldifeatFbankConfigUpdate.to_dict()}")
 
     logging.info(f"device: {device}")
+
+    set_audio_duration_mismatch_tolerance(0.05) // 50ms tolerance
 
     for partition in subsets:
         cuts_path = output_dir / f"cv-{language}_cuts_{partition}.jsonl.gz"
