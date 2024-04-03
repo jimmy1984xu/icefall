@@ -64,7 +64,13 @@ def compute_fbank_commonvoice_dev_test(language: str):
     device = torch.device("cpu")
     if torch.cuda.is_available():
         device = torch.device("cuda", 0)
-    extractor = KaldifeatFbank(KaldifeatFbankConfig(device=device))
+
+    kaldifeatFbankConfig = KaldifeatFbankConfig(device=device)
+    dict = kaldifeatFbankConfig.to_dict()
+    dict["frame_opts"]["samp_freq"] = 8000
+    kaldifeatFbankConfigUpdate = KaldifeatFbankConfig.from_dict(dict)
+    extractor = KaldifeatFbank(kaldifeatFbankConfigUpdate)
+    logging.info(f"fbankconfig: {kaldifeatFbankConfigUpdate.to_dict()}")
 
     logging.info(f"device: {device}")
 

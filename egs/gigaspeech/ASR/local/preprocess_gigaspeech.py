@@ -109,7 +109,7 @@ def preprocess_giga_speech(args):
         cut_set = CutSet.from_manifests(
             recordings=m["recordings"],
             supervisions=m["supervisions"],
-        )
+        ).resample(8000)
         # Run data augmentation that needs to be done in the
         # time domain.
         if partition not in ["DEV", "TEST"]:

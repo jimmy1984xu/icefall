@@ -116,7 +116,7 @@ def compute_fbank_librispeech(
         dataset_parts,
     )
 
-    extractor = Fbank(FbankConfig(num_mel_bins=num_mel_bins))
+    extractor = Fbank(FbankConfig(sampling_rate=8000,num_mel_bins=num_mel_bins))
 
     with get_executor() as ex:  # Initialize the executor only once.
         for partition, m in manifests.items():
@@ -128,7 +128,7 @@ def compute_fbank_librispeech(
             cut_set = CutSet.from_manifests(
                 recordings=m["recordings"],
                 supervisions=m["supervisions"],
-            )
+            ).resample(8000)
 
             if "train" in partition:
                 if bpe_model:

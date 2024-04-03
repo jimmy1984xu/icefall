@@ -128,7 +128,7 @@ def preprocess_commonvoice(
         cut_set = CutSet.from_manifests(
             recordings=m["recordings"],
             supervisions=m["supervisions"],
-        ).resample(16000)
+        ).resample(8000)
 
         # Run data augmentation that needs to be done in the
         # time domain.

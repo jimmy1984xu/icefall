@@ -106,10 +106,15 @@ def compute_fbank_commonvoice_splits(args):
     device = torch.device("cpu")
     if torch.cuda.is_available():
         device = torch.device("cuda", 0)
-    extractor = KaldifeatFbank(KaldifeatFbankConfig(device=device))
+    kaldifeatFbankConfig = KaldifeatFbankConfig(device=device)
+    dict = kaldifeatFbankConfig.to_dict()
+    dict["frame_opts"]["samp_freq"] = 8000
+    kaldifeatFbankConfigUpdate = KaldifeatFbankConfig.from_dict(dict)
+    extractor = KaldifeatFbank(kaldifeatFbankConfigUpdate)
+    logging.info(f"fbankconfig: {kaldifeatFbankConfigUpdate.to_dict()}")
     logging.info(f"device: {device}")
 
-    set_audio_duration_mismatch_tolerance(0.05)  # 50ms tolerance
+    set_audio_duration_mismatch_tolerance(0.1)  # 100ms tolerance
     set_caching_enabled(False)
     for i in range(start, stop):
         idx = f"{i}".zfill(num_digits)
