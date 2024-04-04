@@ -168,7 +168,7 @@ fi
 
 if [ $stage -le 6 ] && [ $stop_stage -ge 6 ]; then
   log "Stage 6: Compute features for XL"
-  num_splits=$(find data/fbank/XL_split -name "cuts_XL_raw.*.jsonl.gz" | wc -l)
+  num_splits=$(find data/fbank/XL_split -name "gigaspeech_cuts_XL_raw.*.jsonl.gz" | wc -l)
   python3 ./local/compute_fbank_gigaspeech_splits.py \
     --num-workers 20 \
     --batch-duration 600 \
