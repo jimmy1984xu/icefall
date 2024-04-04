@@ -161,7 +161,7 @@ if [ $stage -le 5 ] && [ $stop_stage -ge 5 ]; then
   log "Stage 5: Split XL subset into pieces (may take 30 minutes)"
   split_dir=data/fbank/XL_split
   if [ ! -f $split_dir/.split_completed ]; then
-    lhotse split-lazy ./data/fbank/cuts_XL_raw.jsonl.gz $split_dir $num_per_split
+    lhotse split-lazy ./data/fbank/gigaspeech_cuts_XL_raw.jsonl.gz $split_dir $num_per_split
     touch $split_dir/.split_completed
   fi
 fi
