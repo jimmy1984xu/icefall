@@ -1290,17 +1290,17 @@ def run(rank, world_size, args):
 
     librispeech = LibriSpeechAsrDataModule(args)
 
-    gigaspeech_cuts = librispeech.gigaspeech_subset_small_cuts()
+    aiphone_cuts = librispeech.librispeech_cuts_aiphone()
     if params.use_mux:
-        librispeech_cuts = librispeech.train_all_shuf_cuts()
+        librispeech_cuts = librispeech.train_clean_100_1_cuts()
         train_cuts = CutSet.mux(
-            gigaspeech_cuts,  # num cuts = 688182
+            aiphone_cuts,  # num cuts = 688182
             librispeech_cuts,  # num cuts = 843723
-            weights=[688182, 843723],
+            weights=[len(aiphone_cuts), len(librispeech_cuts)],
             stop_early=True,
         )
     else:
-        train_cuts = gigaspeech_cuts
+        train_cuts = aiphone_cuts
     logging.info(train_cuts)
 
     def remove_short_and_long_utt(c: Cut):
@@ -1355,12 +1355,12 @@ def run(rank, world_size, args):
 
     valid_cuts = librispeech.dev_clean_cuts()
     valid_cuts += librispeech.dev_other_cuts()
-    gigaspeech_dev_cuts = librispeech.gigaspeech_dev_cuts()
+    # gigaspeech_dev_cuts = librispeech.gigaspeech_dev_cuts()
 
-    valid_sets = ["librispeech", "gigaspeech"]
+    valid_sets = ["librispeech"]
     valid_dls = [
         librispeech.valid_dataloaders(valid_cuts),
-        librispeech.valid_dataloaders(gigaspeech_dev_cuts),
+        # librispeech.valid_dataloaders(gigaspeech_dev_cuts),
     ]
 
     if not params.print_diagnostics:

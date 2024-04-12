@@ -411,6 +411,13 @@ class LibriSpeechAsrDataModule:
         )
 
     @lru_cache()
+    def train_clean_100_1_cuts(self) -> CutSet:
+        logging.info("About to get train-clean-100-1 cuts")
+        return load_manifest_lazy(
+            self.args.manifest_dir / "librispeech_cuts_train-clean-100-1.jsonl.gz"
+        )
+
+    @lru_cache()
     def train_clean_100_cuts(self) -> CutSet:
         logging.info("About to get train-clean-100 cuts")
         return load_manifest_lazy(
@@ -490,3 +497,9 @@ class LibriSpeechAsrDataModule:
     def gigaspeech_test_cuts(self) -> CutSet:
         logging.info("About to get Gigaspeech test cuts")
         return load_manifest_lazy(self.args.manifest_dir / "cuts_TEST.jsonl.gz")
+
+    @lru_cache()
+    def librispeech_cuts_aiphone(self) -> CutSet:
+        logging.info("About to get aiphone-train")
+        return load_manifest_lazy(self.args.manifest_dir / "librispeech_cuts_aiphone.jsonl.gz")
+
