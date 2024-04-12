@@ -370,6 +370,15 @@ def get_parser():
         modified_beam_search_LODR.
         """,
     )
+
+    parser.add_argument(
+        "--test-cuts",
+        type=str,
+        default="librispeech_cuts_test-other,librispeech_cuts_dev-clean",
+        help="""
+        test cuts.
+        """,
+    )
     add_model_arguments(parser)
 
     return parser
@@ -1016,14 +1025,30 @@ def main():
     args.return_cuts = True
     librispeech = LibriSpeechAsrDataModule(args)
 
-    test_clean_cuts = librispeech.test_clean_cuts()
-    test_other_cuts = librispeech.test_other_cuts()
+    # test_clean_cuts = librispeech.test_clean_cuts()
+    # test_other_cuts = librispeech.test_other_cuts()
 
-    test_clean_dl = librispeech.test_dataloaders(test_clean_cuts)
-    test_other_dl = librispeech.test_dataloaders(test_other_cuts)
+    # test_clean_dl = librispeech.test_dataloaders(test_clean_cuts)
+    # test_other_dl = librispeech.test_dataloaders(test_other_cuts)
 
-    test_sets = ["test-clean", "test-other"]
-    test_dl = [test_clean_dl, test_other_dl]
+    # test_sets = ["test-clean", "test-other"]
+    # test_dl = [test_clean_dl, test_other_dl]
+
+    test_sets = []
+    test_dl = []
+    for test_cut in params.test_cuts.split(','):
+        cut = librispeech.load_cuts(test_cut)
+        dl = librispeech.test_dataloaders(cut)
+        test_sets.append(cut)
+        test_dl.append(dl)
+        logging.info(f"test cut : {test_cut}")
+
+    # tets_cuts_1 = librispeech.load_cuts("librispeech_cuts_aiphone")
+    # tets_cuts_2 = librispeech.load_cuts("librispeech_cuts_huohua")
+    # test_dl_1 = librispeech.test_dataloaders(tets_cuts_1)
+    # test_dl_2 = librispeech.test_dataloaders(tets_cuts_2)
+    # test_sets = ["librispeech_cuts_aiphone", "librispeech_cuts_huohua"]
+    # test_dl = [test_dl_1, test_dl_2]
 
     for test_set, test_dl in zip(test_sets, test_dl):
         results_dict = decode_dataset(
