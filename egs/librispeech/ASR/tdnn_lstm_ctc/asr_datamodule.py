@@ -504,7 +504,8 @@ class LibriSpeechAsrDataModule:
         return load_manifest_lazy(self.args.manifest_dir / "librispeech_cuts_aiphone.jsonl.gz")
 
     @lru_cache
-    def load_cuts(self, name) -> CutSet:
+    def load_cuts(self, name: str) -> CutSet:
         logging.info("About to get {name}")
-        return load_manifest_lazy(self.args.manifest_dir / "{name}.jsonl.gz")
+        manifest_path = self.args.manifest_dir / f"{name}.jsonl.gz"
+        return load_manifest_lazy(manifest_path)
 
