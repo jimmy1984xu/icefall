@@ -532,7 +532,7 @@ def get_params() -> AttributeDict:
             # parameters for zipformer
             "feature_dim": 80,
             "subsampling_factor": 4,  # not passed in, this is fixed.
-            "warm_step": 2000,
+            "warm_step": 12000,  # origin is 2000
             "env_info": get_env_info(),
         }
     )
@@ -1175,9 +1175,19 @@ def run(rank, world_size, args):
         register_inf_check_hooks(model)
 
     librispeech = LibriSpeechAsrDataModule(args)
-
     if params.full_libri:
-        train_cuts = librispeech.train_all_shuf_cuts()
+        train_cuts_1 = librispeech.train_all_shuf_cuts()
+        train_cuts_2 = librispeech.load_gigaspeech_xl_cuts()
+        train_cuts_3 = librispeech.load_libriheavy_large_cuts()
+        train_cuts_4 = librispeech.load_commonvoice_en_161_cuts()
+        train_cuts = CutSet.mux(
+            train_cuts_1,
+            train_cuts_2,
+            train_cuts_3,
+            train_cuts_4,
+            weights=[len(train_cuts_1), len(train_cuts_2), len(train_cuts_3), len(train_cuts_4)],
+            stop_early=False,
+        )
 
         # previously we used the following code to load all training cuts,
         # strictly speaking, shuffled training cuts should be used instead,
