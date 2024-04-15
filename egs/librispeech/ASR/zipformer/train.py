@@ -1180,6 +1180,7 @@ def run(rank, world_size, args):
         train_cuts_2 = librispeech.load_gigaspeech_xl_cuts()
         train_cuts_3 = librispeech.load_libriheavy_large_cuts()
         train_cuts_4 = librispeech.load_commonvoice_en_161_cuts()
+        logging.info("cutset mux start")
         train_cuts = CutSet.mux(
             train_cuts_1,
             train_cuts_2,
@@ -1188,6 +1189,7 @@ def run(rank, world_size, args):
             weights=[len(train_cuts_1), len(train_cuts_2), len(train_cuts_3), len(train_cuts_4)],
             stop_early=False,
         )
+        logging.info("cutset mux finish")
 
         # previously we used the following code to load all training cuts,
         # strictly speaking, shuffled training cuts should be used instead,
