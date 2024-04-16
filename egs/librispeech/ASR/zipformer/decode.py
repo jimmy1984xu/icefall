@@ -1039,7 +1039,7 @@ def main():
     for test_cut in params.test_cuts.split(','):
         cut = librispeech.load_cuts(test_cut)
         dl = librispeech.test_dataloaders(cut)
-        test_sets.append(cut)
+        test_sets.append(test_cut)
         test_dl.append(dl)
         logging.info(f"test cut : {test_cut}")
 
