@@ -1297,7 +1297,7 @@ def run(rank, world_size, args):
         logging.info("cutset mux start")
         train_cuts = CutSet.mux(
             train_cuts1,  # num cuts = 688182
-            librispeech_cuts,  # num cuts = 843723
+            train_cuts2,  # num cuts = 843723
             weights=[len(train_cuts1), len(train_cuts2)],
             stop_early=True,
         )
