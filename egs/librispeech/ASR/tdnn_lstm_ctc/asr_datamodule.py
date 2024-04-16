@@ -502,6 +502,10 @@ class LibriSpeechAsrDataModule:
     def librispeech_cuts_aiphone(self) -> CutSet:
         logging.info("About to get aiphone-train")
         return load_manifest_lazy(self.args.manifest_dir / "librispeech_cuts_aiphone.jsonl.gz")
+    @lru_cache()
+    def librispeech_cuts_huohua(self) -> CutSet:
+        logging.info("About to get aiphone-train")
+        return load_manifest_lazy(self.args.manifest_dir / "librispeech_cuts_huohua.jsonl.gz")
 
     @lru_cache
     def load_cuts(self, name: str) -> CutSet:

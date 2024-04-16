@@ -1290,17 +1290,18 @@ def run(rank, world_size, args):
 
     librispeech = LibriSpeechAsrDataModule(args)
 
-    aiphone_cuts = librispeech.librispeech_cuts_aiphone()
+    # train_cuts1 = librispeech.librispeech_cuts_aiphone()
+    train_cuts1 =  librispeech.lcutslibrispeech_cuts_huohua()
     if params.use_mux:
-        librispeech_cuts = librispeech.train_clean_100_1_cuts()
+        train_cuts2 = librispeech.train_clean_100_1_cuts()
         train_cuts = CutSet.mux(
-            aiphone_cuts,  # num cuts = 688182
+            train_cuts1,  # num cuts = 688182
             librispeech_cuts,  # num cuts = 843723
-            weights=[len(aiphone_cuts), len(librispeech_cuts)],
+            weights=[len(train_cuts1), len(train_cuts2)],
             stop_early=True,
         )
     else:
-        train_cuts = aiphone_cuts
+        train_cuts = train_cuts1
     logging.info(train_cuts)
 
     def remove_short_and_long_utt(c: Cut):
