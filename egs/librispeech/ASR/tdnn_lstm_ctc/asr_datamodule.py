@@ -508,4 +508,4 @@ class LibriSpeechAsrDataModule:
     @lru_cache()
     def load_commonvoice_en_161_cuts(self) -> CutSet:
         logging.info("load_commonvoice_en_161_cuts")
-        return load_manifest_lazy("data/en/fbank" / "cv-en_cuts_train.jsonl.gz")
+        return load_manifest_lazy("data/en/fbank/cv-en_cuts_train.jsonl.gz")
