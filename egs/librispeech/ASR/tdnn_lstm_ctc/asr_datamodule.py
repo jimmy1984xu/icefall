@@ -237,7 +237,7 @@ class LibriSpeechAsrDataModule:
                 CutMix(cuts=huohuanoise_cuts, p=0.5, snr=None, preserve_id=True)
             )
 
-        if self.args.enable_musan:
+        if (not enable_huohua_noise) and self.args.enable_musan:
             logging.info("Enable MUSAN")
             logging.info("About to get Musan cuts")
             cuts_musan = load_manifest(self.args.manifest_dir / "musan_cuts.jsonl.gz")
@@ -518,7 +518,7 @@ class LibriSpeechAsrDataModule:
 
     @lru_cache
     def load_cuts(self, name: str) -> CutSet:
-        logging.info("About to get {name}")
+        logging.info(f"About to get {name}")
         manifest_path = self.args.manifest_dir / f"{name}.jsonl.gz"
         return load_manifest_lazy(manifest_path)
 
