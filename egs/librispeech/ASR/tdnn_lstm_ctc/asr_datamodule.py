@@ -219,6 +219,7 @@ class LibriSpeechAsrDataModule:
         self,
         cuts_train: CutSet,
         sampler_state_dict: Optional[Dict[str, Any]] = None,
+        enable_huohua_noise = False
     ) -> DataLoader:
         """
         Args:
@@ -228,6 +229,14 @@ class LibriSpeechAsrDataModule:
             The state dict for the training sampler.
         """
         transforms = []
+        if enable_huohua_noise:
+            logging.info("Enable huohuanoise_cuts")
+            logging.info("About to get huohua_noise cuts")
+            huohuanoise_cuts = load_manifest(self.args.manifest_dir / "huohuanoise_cuts.jsonl.gz")
+            transforms.append(
+                CutMix(cuts=huohuanoise_cuts, p=0.5, snr=None, preserve_id=True)
+            )
+
         if self.args.enable_musan:
             logging.info("Enable MUSAN")
             logging.info("About to get Musan cuts")
@@ -501,11 +510,11 @@ class LibriSpeechAsrDataModule:
     @lru_cache()
     def librispeech_cuts_aiphone(self) -> CutSet:
         logging.info("About to get aiphone-train")
-        return load_manifest_lazy(self.args.manifest_dir / "librispeech_cuts_aiphone.jsonl.gz")
+        return load_manifest_lazy(self.args.manifest_dir / "librispeech_cuts_aiphone_train.jsonl.gz")
     @lru_cache()
     def librispeech_cuts_huohua(self) -> CutSet:
-        logging.info("About to get aiphone-train")
-        return load_manifest_lazy(self.args.manifest_dir / "librispeech_cuts_huohua.jsonl.gz")
+        logging.info("About to get huohua-train")
+        return load_manifest_lazy(self.args.manifest_dir / "librispeech_cuts_huohua_train.jsonl.gz")
 
     @lru_cache
     def load_cuts(self, name: str) -> CutSet:

@@ -1290,15 +1290,16 @@ def run(rank, world_size, args):
 
     librispeech = LibriSpeechAsrDataModule(args)
 
-    # train_cuts1 = librispeech.librispeech_cuts_aiphone()
-    train_cuts1 =  librispeech.librispeech_cuts_huohua()
+    train_cuts1 =  librispeech.load_cuts("librispeech_cuts_huohua_train")
     if params.use_mux:
-        train_cuts2 = librispeech.train_clean_100_1_cuts()
+        train_cuts2 = librispeech.load_cuts("librispeech_cuts_train-clean-100-33")
+        train_cuts3 = librispeech.load_cuts("librispeech_cuts_train-other-500-66")
         logging.info("cutset mux start")
         train_cuts = CutSet.mux(
-            train_cuts1,  # num cuts = 688182
-            train_cuts2,  # num cuts = 843723
-            weights=[len(train_cuts1), len(train_cuts2)],
+            train_cuts1,
+            train_cuts2,
+            train_cuts3,
+            weights=[len(train_cuts1), len(train_cuts2), len(train_cuts3)],
             stop_early=True,
         )
         logging.info("cutset mux finish")
@@ -1353,7 +1354,7 @@ def run(rank, world_size, args):
         sampler_state_dict = None
 
     train_dl = librispeech.train_dataloaders(
-        train_cuts, sampler_state_dict=sampler_state_dict
+        train_cuts, enable_huohua_noise=True, sampler_state_dict=sampler_state_dict
     )
 
     valid_cuts = librispeech.dev_clean_cuts()
