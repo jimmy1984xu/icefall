@@ -1190,6 +1190,10 @@ def run(rank, world_size, args):
             train_cuts_2,
             train_cuts_3,
             train_cuts_4,
+            train_cuts_5,
+            train_cuts_6,
+            train_cuts_7,
+            train_cuts_8,
             weights=[len(train_cuts_1), len(train_cuts_2), len(train_cuts_3)/2, len(train_cuts_4), len(train_cuts_5), len(train_cuts_6), len(train_cuts_7), len(train_cuts_8)],
             stop_early=True,
         )
