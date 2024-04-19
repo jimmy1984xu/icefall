@@ -493,14 +493,14 @@ class LibriSpeechAsrDataModule:
 
     @lru_cache
     def load_cuts(self, name: str) -> CutSet:
-        logging.info("About to get cuts by {name}")
+        logging.info(f"About to get cuts by {name}")
         manifest_path = self.args.manifest_dir / f"{name}.jsonl.gz"
         return load_manifest_lazy(manifest_path)
 
     @lru_cache()
     def load_gigaspeech_xl_cuts(self) -> CutSet:
         logging.info("load_gigaspeech_xl_cuts")
-        return load_manifest_lazy(self.args.manifest_dir / "cuts_XL.jsonl.gz")
+        return load_manifest_lazy(self.args.manifest_dir / "gigaspeech_cuts_XL.jsonl.gz")
     @lru_cache()
     def load_libriheavy_large_cuts(self) -> CutSet:
         logging.info("load_libriheavy_large_cuts")
@@ -508,4 +508,4 @@ class LibriSpeechAsrDataModule:
     @lru_cache()
     def load_commonvoice_en_161_cuts(self) -> CutSet:
         logging.info("load_commonvoice_en_161_cuts")
-        return load_manifest_lazy("data/en/fbank/cv-en_cuts_train.jsonl.gz")
+        return load_manifest_lazy(self.args.manifest_dir / "cv-en_cuts_train.jsonl.gz")
