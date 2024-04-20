@@ -1180,10 +1180,8 @@ def run(rank, world_size, args):
         train_cuts_2 = librispeech.load_cuts("gigaspeech_cuts_XL")
         train_cuts_3 = librispeech.load_cuts("libriheavy_cuts_large")
         train_cuts_4 = librispeech.load_cuts("cv-en_cuts_train")
-        train_cuts_5 = librispeech.load_cuts("peoples_speech_cuts_clean")
-        train_cuts_6 = librispeech.load_cuts("peoples_speech_cuts_clean_sa")
-        train_cuts_7 = librispeech.load_cuts("peoples_speech_cuts_dirty")
-        train_cuts_8 = librispeech.load_cuts("peoples_speech_cuts_dirty_sa")
+        train_cuts_5 = librispeech.load_cuts("peoples_speech_cuts_dirty")
+        train_cuts_6 = librispeech.load_cuts("peoples_speech_cuts_dirty_sa")
         logging.info("cutset mux start")
         train_cuts = CutSet.mux(
             train_cuts_1,
@@ -1192,9 +1190,7 @@ def run(rank, world_size, args):
             train_cuts_4,
             train_cuts_5,
             train_cuts_6,
-            train_cuts_7,
-            train_cuts_8,
-            weights=[len(train_cuts_1), len(train_cuts_2), len(train_cuts_3)/2, len(train_cuts_4), len(train_cuts_5), len(train_cuts_6), len(train_cuts_7), len(train_cuts_8)],
+            weights=[len(train_cuts_1), len(train_cuts_2), len(train_cuts_3)/1.6, len(train_cuts_4), len(train_cuts_5), len(train_cuts_6)],
             stop_early=True,
         )
         logging.info("cutset mux finish")
